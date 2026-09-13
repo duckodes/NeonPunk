@@ -1,0 +1,16 @@
+[
+  {"id":"medkit","icon":"+","title":"體素針","desc":"戰鬥中回復 25 VITAL","price":80},
+  {"id":"medbox","icon":"▣","title":"醫療箱","desc":"戰鬥中回復 55 VITAL","price":180},
+  {"id":"ramCell","icon":"⌁","title":"RAM 電池","desc":"戰鬥外補滿 RAM","price":120},
+  {"id":"energyDrink","icon":"✦","title":"霓虹能量飲","desc":"使用後 RAM +20","price":0,"usable":true},
+  {"id":"coolant","icon":"◌","title":"冷卻汽水","desc":"使用後 HEAT -6","price":0,"usable":true},
+  {"id":"vitalGel","icon":"●","title":"維生果凍","desc":"使用後 VITAL +18","price":0,"usable":true},
+  {"id":"vitalGelb","icon":"XX","title":"維生果凍2","desc":"使用後 VITAL +20","price":0,"usable":true},
+  {"id":"ramShard","icon":"◇","title":"RAM 碎片","desc":"戰鬥外回復 RAM 35","price":210},
+  {"id":"heatSink","icon":"◍","title":"熱量沉降器","desc":"戰鬥外 HEAT -12","price":260},
+  {"id":"patchKit","icon":"▣","title":"合成修補包","desc":"戰鬥中回復 35 VITAL","price":140},
+  {"id":"blackCoffee","icon":"◆","title":"黑咖啡濃縮液","desc":"立即獲得 1 Energy","price":190},
+  {"id":"ghostAmpoule","icon":"⟐","title":"幽靈安瓿","desc":"戰鬥中回復 70 VITAL","price":320},
+  {"id":"signalScrap","icon":"⌁","title":"訊號廢料","desc":"出售可換取 Credits","price":90},
+  {"id":"ionBattery","icon":"⚡","title":"離子電池","desc":"戰鬥外補滿 RAM","price":240}
+]

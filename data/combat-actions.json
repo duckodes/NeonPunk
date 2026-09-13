@@ -1,0 +1,20 @@
+[
+  {"id":"strike","icon":"◈","title":"斬擊","hint":"免費 // 連擊","className":"attack","desc":"累積連擊並造成物理傷害。"},
+  {"id":"hack","icon":"⌁","title":"ICEBREAK","hint":"2 能量 // 破防","className":"hack","cost":2,"desc":"消耗 RAM，讓敵方反擊減弱。"},
+  {"id":"overdrive","icon":"ϟ","title":"超載脈衝","hint":"3 能量 // 高傷害","className":"overdrive","cost":3,"desc":"高傷害並施加灼燒。"},
+  {"id":"medkit","icon":"＋","title":"體素針","hint":"1 能量 // 回復 25","className":"heal","cost":1,"desc":"快速回復少量 VITAL。"},
+  {"id":"medbox","icon":"▣","title":"醫療箱","hint":"2 能量 // 回復 55","className":"heal","cost":2,"desc":"完整醫療箱，回復大量 VITAL。"},
+  {"id":"guard","icon":"◇","title":"幽靈防禦","hint":"1 能量 // 減傷","className":"guard","cost":1,"desc":"抵擋下一次敵方反擊。"},
+  {"id":"escape","icon":"↗","title":"斷線","hint":"帶著熱度撤離","className":"escape","desc":"結束遭遇並帶著 Heat 撤離。"},
+  {"id":"shockwave","icon":"✹","title":"震盪波","hint":"2 能量 // 中傷害・打斷","className":"hack","cost":2,"price":740,"desc":"造成中等傷害並削弱敵方反擊。"},
+  {"id":"bloodhack","icon":"⟐","title":"血脈駭入","hint":"2 能量 // 傷害・回復","className":"heal","cost":2,"price":980,"desc":"造成傷害並回復 12 VITAL。"},
+  {"id":"random-ghost-lance","icon":"✦","title":"GHOST LANCE","hint":"2 能量 // 穿透傷害","className":"hack","cost":2,"damage":32,"desc":"隨機生成的穿透脈衝。","randomPool":true},
+  {"id":"random-nano-bloom","icon":"✚","title":"NANO BLOOM","hint":"2 能量 // 回復 28","className":"heal","cost":2,"heal":28,"desc":"隨機生成的奈米修復協議。","randomPool":true},
+  {"id":"random-static-fall","icon":"⌁","title":"STATIC FALL","hint":"3 能量 // 高傷害","className":"overdrive","cost":3,"damage":58,"desc":"隨機生成的靜電崩落。","randomPool":true},
+  {"id":"static-pulse","icon":"✹","title":"STATIC PULSE","hint":"1 能量 // 打斷","className":"hack","cost":1,"damage":22,"desc":"短促電弧打斷敵方節奏。","price":620},
+  {"id":"nanite-rush","icon":"✚","title":"NANITE RUSH","hint":"2 能量 // 回復 20","className":"heal","cost":2,"heal":20,"desc":"釋放修復奈米機群。","price":700},
+  {"id":"razor-link","icon":"⌁","title":"RAZOR LINK","hint":"2 能量 // 連鎖傷害","className":"hack","cost":2,"damage":38,"desc":"沿著敵方神經鏈路切入。","price":820},
+  {"id":"flare-break","icon":"ϟ","title":"FLARE BREAK","hint":"3 能量 // 爆發","className":"overdrive","cost":3,"damage":66,"desc":"燃燒過載核心，造成爆發傷害。","price":1060},
+  {"id":"phase-lure","icon":"◌","title":"PHASE LURE","hint":"1 能量 // 牽制","className":"guard","cost":1,"desc":"投射殘像，降低下一次反擊。","price":760},
+  {"id":"dead-channel","icon":"⊘","title":"DEAD CHANNEL","hint":"2 能量 // 破防","className":"hack","cost":2,"damage":34,"desc":"切斷敵方的戰術回傳頻道。","price":900}
+]

@@ -1,0 +1,13 @@
+[
+  {"id":"phase","icon":"◌","title":"PHASE SHIFT","desc":"斷線撤離不增加 Heat","price":420},
+  {"id":"parasite","icon":"⟐","title":"PARASITE TAP","desc":"ICEBREAK 命中回復 8 VITAL","price":680},
+  {"id":"echo","icon":"∿","title":"ECHO STRIKE","desc":"第三段連擊追加一次脈衝傷害","price":860},
+  {"id":"decoy","icon":"▱","title":"DECOY GHOST","desc":"被擊倒時保留一半 Credits","price":1200},
+  {"id":"overclock","icon":"ϟ","title":"OVERCLOCK VEIN","desc":"每回合第一次行動獲得額外 Energy","price":540},
+  {"id":"backtrace","icon":"⌁","title":"BACKTRACE","desc":"ICEBREAK 後降低更多反擊傷害","price":720},
+  {"id":"lifeline","icon":"✚","title":"LIFELINE PROTOCOL","desc":"VITAL 低於 30 時獲得減傷","price":840},
+  {"id":"ghoststep","icon":"◌","title":"GHOSTSTEP","desc":"斷線時 Heat 額外降低","price":960},
+  {"id":"wiretap","icon":"⟐","title":"WIRETAP SAINT","desc":"完成合約時額外獲得 XP","price":1080},
+  {"id":"kill-switch","icon":"⊘","title":"KILL-SWITCH","desc":"敵方 VITAL 低於 20% 時傷害提高","price":1320},
+  {"id":"memory-leech","icon":"∿","title":"MEMORY LEECH","desc":"開啟黑盒時有機會回復 VITAL","price":1450}
+]

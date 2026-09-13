@@ -1,0 +1,15 @@
+[
+  {"id":"deck-vanta","slot":"DECK","icon":"◈","title":"Vanta Deck Mk.II","desc":"ICEBREAK +18 // 3 RAM","bonus":"hack"},
+  {"id":"deck-ghost","slot":"DECK","icon":"⌁","title":"Ghostlink Deck","desc":"ICEBREAK -10 RAM cost","bonus":"cheapHack"},
+  {"id":"knife-mono","slot":"WEAPON","icon":"✦","title":"Mono-Knife","desc":"斬擊 +10 // PHYSICAL","bonus":"strike"},
+  {"id":"knife-arc","slot":"WEAPON","icon":"ϟ","title":"Arc Scalpel","desc":"連擊門檻 -1","bonus":"combo"},
+  {"id":"coat-ghost","slot":"COAT","icon":"◇","title":"Ghostweave Coat","desc":"防禦額外減傷 10%","bonus":"guard"},
+  {"id":"coat-rain","slot":"COAT","icon":"▣","title":"Rainmantle","desc":"Heat 增加 -2 / 回合","bonus":"heat"},
+  {"id":"deck-helix","slot":"DECK","icon":"⟐","title":"Helix Breach Deck","desc":"ICEBREAK 穿透防火牆","bonus":"hack"},
+  {"id":"deck-null","slot":"DECK","icon":"○","title":"Null Choir Deck","desc":"RAM 消耗降低 1","bonus":"cheapHack"},
+  {"id":"knife-static","slot":"WEAPON","icon":"ϟ","title":"Static Fang","desc":"斬擊附帶電擊","bonus":"strike"},
+  {"id":"knife-ceramic","slot":"WEAPON","icon":"◇","title":"Ceramic Edge","desc":"連擊傷害更穩定","bonus":"combo"},
+  {"id":"coat-mirror","slot":"COAT","icon":"◈","title":"Mirrorveil Coat","desc":"反擊傷害額外降低","bonus":"guard"},
+  {"id":"coat-ash","slot":"COAT","icon":"✦","title":"Ashline Mantle","desc":"Heat 增加 -3 / 回合","bonus":"heat"},
+  {"id":"coat-neon","slot":"COAT","icon":"✹","title":"Neon Warden Shell","desc":"受到傷害時穩定連擊","bonus":"guard"}
+]

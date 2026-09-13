@@ -1,0 +1,14 @@
+[
+  {"id":"neural","icon":"◉","title":"Neural Overclock","desc":"RAM 回復效率 +12","cost":360},
+  {"id":"plating","icon":"▣","title":"Carbon Plating","desc":"最大 VITAL +15","cost":450},
+  {"id":"mono","icon":"✦","title":"Mono-Knife Edge","desc":"斬擊傷害 +10","cost":620},
+  {"id":"ghostweave","icon":"◇","title":"Ghostweave Lining","desc":"防禦時額外減傷 10%","cost":780},
+  {"id":"blackice","icon":"⌁","title":"Black ICE Core","desc":"ICEBREAK 傷害 +18","cost":920},
+  {"id":"redline","icon":"ϟ","title":"Redline Governor","desc":"超載脈衝傷害 +20","cost":1100},
+  {"id":"signalweave","icon":"∿","title":"Signalweave Mesh","desc":"合約獎勵 Credits +8%","cost":540},
+  {"id":"mirrorglass","icon":"◇","title":"Mirror Glass Cortex","desc":"Heat 上限控制更穩定","cost":680},
+  {"id":"nanoforge","icon":"✚","title":"Nanoforge Marrow","desc":"倒地後恢復 VITAL +10","cost":760},
+  {"id":"nullsocket","icon":"○","title":"Nullsocket Array","desc":"ICEBREAK 額外削弱反擊","cost":880},
+  {"id":"kinetic-bloom","icon":"✹","title":"Kinetic Bloom","desc":"連擊傷害逐段增加","cost":990},
+  {"id":"stormcore","icon":"⚡","title":"Stormcore Capacitor","desc":"超載脈衝 Heat +2","cost":1280}
+]
