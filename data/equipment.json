@@ -1,15 +1,15 @@
 [
-  {"id":"deck-vanta","slot":"DECK","icon":"◈","title":"Vanta Deck Mk.II","desc":"ICEBREAK +18 // 3 RAM","bonus":"hack"},
-  {"id":"deck-ghost","slot":"DECK","icon":"⌁","title":"Ghostlink Deck","desc":"ICEBREAK -10 RAM cost","bonus":"cheapHack"},
-  {"id":"knife-mono","slot":"WEAPON","icon":"✦","title":"Mono-Knife","desc":"斬擊 +10 // PHYSICAL","bonus":"strike"},
-  {"id":"knife-arc","slot":"WEAPON","icon":"ϟ","title":"Arc Scalpel","desc":"連擊門檻 -1","bonus":"combo"},
-  {"id":"coat-ghost","slot":"COAT","icon":"◇","title":"Ghostweave Coat","desc":"防禦額外減傷 10%","bonus":"guard"},
-  {"id":"coat-rain","slot":"COAT","icon":"▣","title":"Rainmantle","desc":"Heat 增加 -2 / 回合","bonus":"heat"},
-  {"id":"deck-helix","slot":"DECK","icon":"⟐","title":"Helix Breach Deck","desc":"ICEBREAK 穿透防火牆","bonus":"hack"},
-  {"id":"deck-null","slot":"DECK","icon":"○","title":"Null Choir Deck","desc":"RAM 消耗降低 1","bonus":"cheapHack"},
-  {"id":"knife-static","slot":"WEAPON","icon":"ϟ","title":"Static Fang","desc":"斬擊附帶電擊","bonus":"strike"},
-  {"id":"knife-ceramic","slot":"WEAPON","icon":"◇","title":"Ceramic Edge","desc":"連擊傷害更穩定","bonus":"combo"},
-  {"id":"coat-mirror","slot":"COAT","icon":"◈","title":"Mirrorveil Coat","desc":"反擊傷害額外降低","bonus":"guard"},
-  {"id":"coat-ash","slot":"COAT","icon":"✦","title":"Ashline Mantle","desc":"Heat 增加 -3 / 回合","bonus":"heat"},
-  {"id":"coat-neon","slot":"COAT","icon":"✹","title":"Neon Warden Shell","desc":"受到傷害時穩定連擊","bonus":"guard"}
+  {"id":"deck-vanta","slot":"DECK","icon":"◈","title":"梵塔駭入甲板","titleEn":"VANTA DECK MK.II","desc":"ICEBREAK +18 // 3 RAM","descEn":"ICEBREAK +18 // 3 RAM","bonus":"hack","starter":true,"price":0,"sellPrice":0},
+  {"id":"deck-ghost","slot":"DECK","icon":"⌁","title":"幽鏈甲板","titleEn":"GHOSTLINK DECK","desc":"ICEBREAK 少消耗 1 RAM","descEn":"ICEBREAK costs 1 less RAM","bonus":"cheapHack","price":720,"sellPrice":432},
+  {"id":"deck-helix","slot":"DECK","icon":"⟐","title":"螺旋突破甲板","titleEn":"HELIX BREACH DECK","desc":"ICEBREAK 穿透防火牆","descEn":"ICEBREAK pierces firewall protocols","bonus":"hack","price":880,"sellPrice":528},
+  {"id":"deck-null","slot":"DECK","icon":"○","title":"虛無合唱甲板","titleEn":"NULL CHOIR DECK","desc":"RAM 消耗降低 1","descEn":"Reduces RAM costs by 1","bonus":"cheapHack","price":1040,"sellPrice":624},
+  {"id":"knife-mono","slot":"WEAPON","icon":"✦","title":"單分子刀","titleEn":"MONO-KNIFE","desc":"斬擊 +10 // 物理傷害","descEn":"STRIKE +10 // PHYSICAL DAMAGE","bonus":"strike","starter":true,"price":0,"sellPrice":0},
+  {"id":"knife-arc","slot":"WEAPON","icon":"ϟ","title":"弧光手術刀","titleEn":"ARC SCALPEL","desc":"連擊門檻 -1","descEn":"Combo threshold -1","bonus":"combo","price":680,"sellPrice":408},
+  {"id":"knife-static","slot":"WEAPON","icon":"ϟ","title":"靜電獠牙","titleEn":"STATIC FANG","desc":"斬擊附帶電擊","descEn":"STRIKE adds an electric pulse","bonus":"strike","price":760,"sellPrice":456},
+  {"id":"knife-ceramic","slot":"WEAPON","icon":"◇","title":"陶瓷刃","titleEn":"CERAMIC EDGE","desc":"連擊傷害更穩定","descEn":"Combo damage is more consistent","bonus":"combo","price":940,"sellPrice":564},
+  {"id":"coat-ghost","slot":"COAT","icon":"◇","title":"幽織外套","titleEn":"GHOSTWEAVE COAT","desc":"防禦額外減傷 10%","descEn":"Guard grants 10% extra damage reduction","bonus":"guard","starter":true,"price":0,"sellPrice":0},
+  {"id":"coat-rain","slot":"COAT","icon":"▣","title":"雨幕披風","titleEn":"RAINMANTLE","desc":"每回合少增加 2 Heat","descEn":"Gain 2 less Heat per turn","bonus":"heat","price":620,"sellPrice":372},
+  {"id":"coat-mirror","slot":"COAT","icon":"◈","title":"鏡紗外套","titleEn":"MIRRORVEIL COAT","desc":"反擊傷害額外降低","descEn":"Further reduces counterattack damage","bonus":"guard","price":860,"sellPrice":516},
+  {"id":"coat-ash","slot":"COAT","icon":"✦","title":"灰線披肩","titleEn":"ASHLINE MANTLE","desc":"每回合少增加 3 Heat","descEn":"Gain 3 less Heat per turn","bonus":"heat","price":980,"sellPrice":588},
+  {"id":"coat-neon","slot":"COAT","icon":"✹","title":"霓虹守衛外殼","titleEn":"NEON WARDEN SHELL","desc":"受到傷害時穩定連擊","descEn":"Preserves combo when taking damage","bonus":"guard","price":1180,"sellPrice":708}
 ]
