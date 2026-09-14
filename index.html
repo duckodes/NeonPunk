@@ -27,6 +27,11 @@
 		.equipment-choice b, .equipment-choice small { min-width: 0; overflow-wrap: anywhere; }
 		.equipment-choice small { color: var(--muted); font-size: 8px; line-height: 1.25; }
 		.equipment-choice:hover, .equipment-choice.active { border-color: var(--cyan); background: rgba(61, 229, 208, .1); box-shadow: inset 2px 0 var(--cyan); }
+		.title-modal { position: fixed; inset: 0; z-index: 47; display: grid; place-items: center; padding: 20px; background: rgba(3, 6, 10, .82); }
+		.title-box { width: min(560px, 100%); max-height: 86vh; overflow: auto; padding: 26px; }
+		.title-box h2 { margin: 8px 0; font: 700 30px var(--display); }.title-box > p { color: var(--muted); font-size: 10px; }
+		.title-option { display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; width: 100%; margin: 6px 0; padding: 10px; border: 1px solid var(--line); background: #0b121b; color: var(--text); text-align: left; }
+		.title-option .title-mark { color: var(--amber); font-size: 18px; text-align: center; }.title-option b,.title-option small { display: block; }.title-option small { margin-top: 3px; color: var(--muted); font-size: 9px; }.title-option em { color: var(--muted); font: 9px var(--mono); }.title-option.active,.title-option:hover:not(:disabled) { border-color: var(--cyan); background: rgba(61, 229, 208, .1); }.title-option.active em { color: var(--cyan); }.title-option.locked { opacity: .45; }
 		.run-streak-badge { display: grid; grid-template-columns: auto auto; gap: 3px 8px; margin: 14px 0; padding: 9px 10px; border: 1px solid rgba(255, 186, 92, .4); background: rgba(255, 186, 92, .06); }
 		.run-streak-badge span { color: var(--amber); font-size: 8px; letter-spacing: 1px; grid-column: 1 / -1; }
 		.run-streak-badge b { color: var(--text); font: 700 22px var(--display); line-height: 1; }
@@ -175,7 +180,7 @@
 
 		<main class="layout">
 			<aside class="sidebar panel">
-				<div class="profile-heading"><div class="avatar" id="avatar">K</div><div><span class="eyebrow">RUNNER ID</span><h1 id="playerName">KIRA-09</h1><p id="playerRole">街頭駭客 // LV. 03</p><button class="rename-link" id="renameBtn">編輯 Runner ID</button></div></div>
+				<div class="profile-heading"><div class="avatar" id="avatar">K</div><div><span class="eyebrow">RUNNER ID</span><h1 id="playerName">KIRA-09</h1><p id="playerRole">街頭駭客 // LV. 03</p><button class="rename-link" id="renameBtn">編輯 Runner ID</button><button class="rename-link" id="titleBtn" type="button">管理稱號</button></div></div>
 				<div class="level-row"><span>SYNC LEVEL</span><b id="levelText">LV 03</b></div>
 				<div class="xp-track"><span id="xpBar"></span></div>
 				<div class="xp-caption"><span id="xpText">120 / 260 XP</span><span id="credits">₡ 1,240</span></div>
@@ -210,6 +215,7 @@
 	</div>
 	<div class="login-modal" id="loginModal" hidden><div class="login-box panel"><button class="close-btn" id="closeLogin">×</button><span class="eyebrow pink">IDENTITY GATE // SECURE</span><h2 id="loginTitle">登入 RUNNER NETWORK</h2><p id="loginHint">使用你的 Firebase Email 帳號同步進度。</p><form id="loginForm"><label>EMAIL<input id="emailInput" type="email" required autocomplete="email" placeholder="runner@neonpunk.net" /></label><label>PASSWORD<input id="passwordInput" type="password" required minlength="6" autocomplete="current-password" placeholder="至少 6 個字元" /></label><button class="primary-btn full-btn" type="submit" id="authSubmit">登入並同步</button></form><button class="switch-auth" id="switchAuth" type="button">還沒有帳號？建立 Runner ID</button><p class="auth-error" id="authError"></p></div></div>
 	<div class="rename-modal" id="renameModal" hidden><div class="rename-box panel"><button class="close-btn" id="closeRename">×</button><span class="eyebrow pink">RUNNER PROFILE // EDIT</span><h2>改名</h2><p>新的名字會同步到你的 Runner 存檔。</p><form id="renameForm"><label>RUNNER ID<input id="nameInput" maxlength="18" required placeholder="例如：VOID-77" /></label><button class="primary-btn full-btn" type="submit">確認改名</button></form></div></div>
+	<div class="title-modal" id="titleModal" hidden><div class="title-box panel"><button class="close-btn" id="closeTitle" type="button">×</button><span class="eyebrow pink">RUNNER IDENTITY // TITLES</span><h2>稱號資料庫</h2><p>完成條件解鎖稱號，裝備後會顯示在 Runner ID。</p><div id="titleList"></div></div></div>
 	<div class="rename-modal" id="noteModal" hidden><div class="rename-box panel"><button class="close-btn" id="closeNote" type="button">×</button><span class="eyebrow pink">RUNNER NOTE // EDIT</span><h2>編輯備註</h2><p>這段文字會保存到目前 Runner 存檔。</p><form id="noteForm"><label>NOTE<textarea id="noteInput" maxlength="180" required></textarea></label><button class="primary-btn full-btn" type="submit">保存備註</button></form></div></div>
 	<div class="result-modal" id="resultModal" hidden><div class="result-box"><span class="result-kicker" id="resultKicker">MISSION RESULT</span><div class="result-symbol" id="resultSymbol">✓</div><h2 id="resultTitle">TARGET DOWN</h2><p id="resultBody">合約完成。</p><div class="result-reward" id="resultReward"></div><button class="primary-btn" id="resultClose">繼續行動</button></div></div>
 	<div class="values-modal" id="valuesModal" hidden><div class="values-box panel"><button class="close-btn" id="closeValues" type="button">×</button><span class="eyebrow pink">RUNNER TELEMETRY // LIVE</span><h2>目前所有數值</h2><div class="values-grid" id="valuesGrid"></div><div class="radar-panel"><div class="radar-heading"><b>COMBAT PROFILE</b><small>依目前六個 Combat Actions 計算</small></div><div id="energyPolygon"></div></div></div></div>
