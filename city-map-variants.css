@@ -1,0 +1,88 @@
+/* Distinct visual language for the main city network map. */
+.redesigned-city-frame {
+	--map-glow: #69e0cb;
+	--map-secondary: #b7ec63;
+	background: radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--map-glow) 16%, transparent), transparent 34%), #071117;
+}
+
+.redesigned-city-frame::before {
+	background: repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--map-glow) 5%, transparent) 28px), repeating-linear-gradient(90deg, transparent 0 27px, color-mix(in srgb, var(--map-glow) 5%, transparent) 28px);
+}
+
+.redesigned-city-frame[data-city="glass"] {
+	--map-glow: #69e0cb;
+	--map-secondary: #b7ec63;
+	background: radial-gradient(circle at 50% 44%, #17434b 0 14%, transparent 38%), linear-gradient(145deg, #0c2730, #061016 72%);
+}
+.redesigned-city-frame[data-city="glass"]::before { background: repeating-linear-gradient(0deg, transparent 0 20px, #69e0cb16 21px), repeating-linear-gradient(90deg, transparent 0 44px, #b7ec6310 45px); }
+
+.redesigned-city-frame[data-city="rust"] {
+	--map-glow: #ffba5c;
+	--map-secondary: #ff617a;
+	background: linear-gradient(155deg, #342027 0 21%, transparent 21.5%), repeating-linear-gradient(90deg, #281923 0 8px, #17131d 9px 38px);
+}
+.redesigned-city-frame[data-city="rust"]::before { background: repeating-linear-gradient(155deg, transparent 0 34px, #ffba5c18 35px 36px), repeating-linear-gradient(0deg, transparent 0 54px, #ff617a10 55px); }
+.redesigned-city-frame[data-city="rust"] .redesigned-city-lines path { stroke: #ffba5c99; }
+.redesigned-city-frame[data-city="rust"] .redesigned-city-lines .route-cross { stroke: #ff617a88; }
+
+.redesigned-city-frame[data-city="void"] {
+	--map-glow: #ff4f96;
+	--map-secondary: #b478ff;
+	background: radial-gradient(ellipse at 50% 52%, #4b214e 0 12%, transparent 35%), #100b1a;
+}
+.redesigned-city-frame[data-city="void"]::before { background: repeating-radial-gradient(ellipse at 50% 50%, transparent 0 27px, #b478ff15 28px 29px); }
+.redesigned-city-frame[data-city="void"] .redesigned-city-lines path { stroke: #b478ff88; stroke-dasharray: .7 3.5; }
+.redesigned-city-frame[data-city="void"] .redesigned-city-core { border-radius: 50%; }
+
+.redesigned-city-frame[data-city="flood"] {
+	--map-glow: #4ab8ff;
+	--map-secondary: #3de5d0;
+	background: repeating-linear-gradient(0deg, #0b2634 0 24px, #0d3040 25px 26px), #071720;
+}
+.redesigned-city-frame[data-city="flood"]::before { background: repeating-linear-gradient(0deg, transparent 0 18px, #4ab8ff22 19px 20px); }
+.redesigned-city-frame[data-city="flood"] .redesigned-city-lines path { stroke: #4ab8ff99; }
+.redesigned-city-frame[data-city="flood"] .redesigned-city-core { border-radius: 14px 14px 3px 3px; }
+
+.redesigned-city-frame[data-city="orbital"] {
+	--map-glow: #ffba5c;
+	--map-secondary: #f4fbff;
+	background: radial-gradient(ellipse at 50% 50%, transparent 0 18%, #f4fbf414 18.5% 19%, transparent 19.5% 34%, #ffba5c18 34.5% 35%, transparent 35.5%), #0c1422;
+}
+.redesigned-city-frame[data-city="orbital"]::before { background: repeating-radial-gradient(ellipse at 50% 50%, transparent 0 36px, #f4fbf412 37px 38px); }
+.redesigned-city-frame[data-city="orbital"] .redesigned-city-core { border-radius: 50%; width: 82px; height: 82px; }
+.redesigned-city-frame[data-city="orbital"] .redesigned-city-lines path { stroke: #f4fbf477; }
+
+.redesigned-city-frame[data-city="wilds"] {
+	--map-glow: #b7ec63;
+	--map-secondary: #ffba5c;
+	background: linear-gradient(172deg, #1e2b1e 0 38%, #121b13 38.5% 62%, #0a120d 62.5%);
+}
+.redesigned-city-frame[data-city="wilds"]::before { background: repeating-linear-gradient(168deg, transparent 0 38px, #b7ec6316 39px 41px); }
+.redesigned-city-frame[data-city="wilds"] .redesigned-city-lines path { stroke: #b7ec6388; }
+.redesigned-city-frame[data-city="wilds"] .redesigned-city-core { transform: translate(-50%, -50%) rotate(45deg); }
+.redesigned-city-frame[data-city="wilds"] .redesigned-city-core > * { transform: rotate(-45deg); }
+
+.redesigned-city-frame[data-city="garden"] {
+	--map-glow: #71e58b;
+	--map-secondary: #b7ec63;
+	background: radial-gradient(ellipse at 50% 50%, #164a3b 0 13%, transparent 35%), #081a15;
+}
+.redesigned-city-frame[data-city="garden"]::before { background: repeating-linear-gradient(125deg, transparent 0 24px, #71e58b18 25px 28px); }
+.redesigned-city-frame[data-city="garden"] .redesigned-city-lines path { stroke: #71e58b99; }
+.redesigned-city-frame[data-city="garden"] .redesigned-city-core { border-radius: 45% 55% 45% 55%; }
+
+.redesigned-city-frame[data-city^="sector-"] {
+	--map-glow: #ffba5c;
+	--map-secondary: #ff4f96;
+	background: repeating-linear-gradient(135deg, #141e2b 0 30px, #101722 31px 62px), #080f17;
+}
+.redesigned-city-frame[data-city^="sector-"]::before { background: repeating-linear-gradient(135deg, transparent 0 30px, #ffba5c18 31px 33px); }
+.redesigned-city-frame[data-city^="sector-"] .redesigned-city-lines path { stroke: #ffba5c99; }
+
+.redesigned-city-frame .redesigned-city-core {
+	border-color: var(--map-glow);
+	box-shadow: 0 0 0 10px color-mix(in srgb, var(--map-glow) 10%, transparent), 0 0 30px color-mix(in srgb, var(--map-glow) 24%, transparent);
+}
+.redesigned-city-frame .redesigned-city-core-shape path { stroke: var(--map-glow); }
+.redesigned-city-frame .redesigned-city-art { color: var(--map-secondary); }
+.redesigned-city-frame .redesigned-city-footer b { color: var(--map-glow); }

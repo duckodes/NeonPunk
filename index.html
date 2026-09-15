@@ -24,6 +24,7 @@
 	<link rel="stylesheet" href="future-node-buttons.css" />
 	<link rel="stylesheet" href="plate-world.css" />
 	<link rel="stylesheet" href="city-network.css" />
+	<link rel="stylesheet" href="responsive-topbar.css" />
 	<style>
 		[hidden] { display: none !important; }
 		.inventory-strip > b { display: none; }
@@ -208,6 +209,8 @@
 		.city-world-map.treasure-map .world-node.active .world-label { opacity: 1; }
 		.city-world-map.treasure-map .world-node-meta { opacity: 1; }
 	</style>
+	<link rel="stylesheet" href="city-art-variants.css" />
+	<link rel="stylesheet" href="city-map-variants.css" />
 	</head>
 <body>
 	<div class="scanlines"></div>
@@ -262,5 +265,7 @@
 	<div class="help-modal" id="helpModal" hidden><div class="help-box panel"><button class="close-btn" id="closeHelp" type="button">×</button><span class="eyebrow pink">N//P FIELD MANUAL</span><h2>遊玩說明</h2><div class="help-grid"><section><h3>資源</h3><p><b>VITAL</b> 你的生命值，歸零會被擊倒。</p><p><b>RAM</b> 駭入資源，ICEBREAK 會消耗 RAM。</p><p><b>ENERGY</b> 每回合的主動技能能量，敵方回合後回充。</p><p><b>HEAT</b> 城市警戒度，越高敵人越危險。</p></section><section><h3>能力</h3><p><b>COMBAT ACTIONS</b> 回合內主動使用，會消耗 Energy，可造成傷害、治療、防禦或撤離。</p><p><b>NEURAL SLOTS</b> 被動植入，常駐或觸發，不直接消耗 Energy。</p><p>左側每個 SLOT 都能更換 Combat Action；戰鬥中按鈕下方會顯示預估效果。</p></section><section><h3>物品與戰利品</h3><p><b>體素針</b> 回復 25 VITAL；<b>醫療箱</b> 回復 55 VITAL。</p><p><b>RAM 電池</b> 補滿 RAM；黑盒可能掉落 Credits、物資、技能或 Combat Action。</p><p>飲料機先投幣再取貨，會隨機給予 RAM、VITAL、HEAT 或 Credits。</p></section><section><h3>城市與地下城</h3><p>不同城市有不同黑市貨池與循環活動，活動可重複遊玩。</p><p>地下城先選破解、潛行或強攻路線，再進入有不同難度與獎勵的戰鬥。</p><p>完成合約、城市活動與地下城都能持續累積 XP、Credits、REP 與新能力。</p></section></div></div></div>
 	<div class="toast" id="toast"></div>
 	<div class="signal-modal" id="signalModal" hidden><div class="signal-box panel"><button class="close-btn" id="closeSignal" type="button">×</button><span class="eyebrow pink">SIGNAL HUNT // ACTIVE SCAN</span><h2>掃描街區訊號</h2><p id="signalScanStatus">雷達正在捕捉附近的異常頻段。</p><div class="signal-radar"><div class="radar-sweep"></div><i class="radar-ring ring-one"></i><i class="radar-ring ring-two"></i><div id="radarNodes"></div></div><div class="signal-results" id="signalResults"></div></div></div>
+	<script src="city-glyph-variants.js"></script>
+	<script src="city-network-variation.js"></script>
 </body>
 </html>

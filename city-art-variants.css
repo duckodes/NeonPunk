@@ -1,0 +1,94 @@
+/* Give each city a distinct hero scene instead of only changing the accent color. */
+.city-art {
+	--scene-sky: #101f2a;
+	--scene-floor: #080f16;
+	background: radial-gradient(circle at 68% 28%, var(--city-hot, var(--pink)) 0 8%, transparent 8.5%), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+	transition: background .35s ease, filter .35s ease;
+}
+
+.city-art .sun,
+.city-art .tower,
+.city-art .wire {
+	transition: all .35s ease;
+}
+
+.city-art[data-city="glass"] { --scene-sky: #132d38; --scene-floor: #08121a; }
+.city-art[data-city="glass"] .sun { width: 126px; height: 126px; border-radius: 50%; }
+.city-art[data-city="glass"] .tower { transform: translateY(0); }
+
+.city-art[data-city="rust"] {
+	--scene-sky: #302027;
+	--scene-floor: #130f15;
+	background: linear-gradient(165deg, #3a252b 0 18%, transparent 18.5%), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city="rust"] .sun { width: 92px; height: 92px; border-radius: 8px; transform: rotate(45deg); }
+.city-art[data-city="rust"] .tower { transform: skewX(-8deg) translateY(8px); }
+.city-art[data-city="rust"] .t1,
+.city-art[data-city="rust"] .t4 { height: 42%; }
+.city-art[data-city="rust"] .t2,
+.city-art[data-city="rust"] .t5 { height: 68%; }
+.city-art[data-city="rust"] .wire { transform: skewY(7deg); }
+
+.city-art[data-city="void"] {
+	--scene-sky: #21152c;
+	--scene-floor: #0d0b16;
+	background: radial-gradient(ellipse at 62% 56%, #b478ff33 0 13%, transparent 13.5%), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 74%);
+}
+.city-art[data-city="void"] .sun { width: 148px; height: 54px; border-radius: 50%; transform: rotate(-18deg); opacity: .72; }
+.city-art[data-city="void"] .tower { transform: translateY(20px) scaleY(.82); }
+.city-art[data-city="void"] .t2,
+.city-art[data-city="void"] .t5 { height: 86%; }
+.city-art[data-city="void"] .wire { opacity: .45; transform: rotate(-9deg); }
+
+.city-art[data-city="flood"] {
+	--scene-sky: #102d42;
+	--scene-floor: #07141d;
+	background: repeating-linear-gradient(0deg, transparent 0 20px, #4ab8ff18 21px 22px), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city="flood"] .sun { width: 170px; height: 44px; border-radius: 50%; transform: translateY(28px); opacity: .7; }
+.city-art[data-city="flood"] .tower { transform: translateY(-10px) scaleX(.82); }
+.city-art[data-city="flood"] .t1,
+.city-art[data-city="flood"] .t3 { height: 34%; }
+.city-art[data-city="flood"] .wire { transform: skewY(-5deg); opacity: .7; }
+
+.city-art[data-city="orbital"] {
+	--scene-sky: #273247;
+	--scene-floor: #0b111c;
+	background: radial-gradient(circle at 58% 36%, transparent 0 37px, #f4fbf455 38px 40px, transparent 41px), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city="orbital"] .sun { width: 78px; height: 78px; border-radius: 50%; background: transparent; border: 2px solid var(--city-hot); box-shadow: 0 0 0 15px #ffba5c22, 0 0 28px var(--city-hot); }
+.city-art[data-city="orbital"] .tower { transform: translateY(-18px) scaleX(.62); }
+.city-art[data-city="orbital"] .t2 { height: 84%; }
+.city-art[data-city="orbital"] .t4 { height: 76%; }
+.city-art[data-city="orbital"] .wire { transform: rotate(18deg); }
+
+.city-art[data-city="wilds"] {
+	--scene-sky: #283024;
+	--scene-floor: #10150f;
+	background: linear-gradient(172deg, transparent 0 62%, #b7ec6326 62.5% 63%, transparent 63.5%), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city="wilds"] .sun { width: 108px; height: 108px; border-radius: 16%; transform: translateY(8px) rotate(12deg); }
+.city-art[data-city="wilds"] .tower { transform: translateY(22px) rotate(3deg); opacity: .68; }
+.city-art[data-city="wilds"] .t1,
+.city-art[data-city="wilds"] .t5 { height: 28%; }
+.city-art[data-city="wilds"] .wire { transform: skewY(11deg); }
+
+.city-art[data-city="garden"] {
+	--scene-sky: #16352e;
+	--scene-floor: #091712;
+	background: repeating-linear-gradient(120deg, transparent 0 38px, #71e58b16 39px 42px), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city="garden"] .sun { width: 112px; height: 138px; border-radius: 54% 46% 58% 42%; transform: rotate(-24deg); }
+.city-art[data-city="garden"] .tower { transform: translateY(4px) rotate(var(--tower-tilt, 0deg)); border-radius: 45% 45% 0 0; }
+.city-art[data-city="garden"] .t1 { --tower-tilt: -7deg; height: 58%; }
+.city-art[data-city="garden"] .t3 { --tower-tilt: 8deg; height: 74%; }
+.city-art[data-city="garden"] .wire { transform: rotate(-14deg); }
+
+.city-art[data-city^="sector-"] {
+	--scene-sky: #172331;
+	--scene-floor: #080e16;
+	background: repeating-linear-gradient(135deg, transparent 0 26px, #ffba5c16 27px 28px), linear-gradient(160deg, var(--scene-sky), var(--scene-floor) 72%);
+}
+.city-art[data-city^="sector-"] .sun { width: 84px; height: 84px; border-radius: 2px; transform: rotate(45deg); }
+.city-art[data-city^="sector-"] .tower { transform: translateY(12px) skewX(-4deg); }
+.city-art[data-city^="sector-"] .wire { transform: skewY(-12deg); }
