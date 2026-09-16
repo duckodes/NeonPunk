@@ -120,6 +120,8 @@ function renderCombatSkills() { const panel = $("combatPanel"); if (!panel) retu
 function useInventory(id) { const maxHp = 100 + (state.upgrades.includes("plating") ? 15 : 0); if (id === "medkit" && state.inventory.medkit > 0) { state.inventory.medkit -= 1; state.hp = clamp(state.hp + 25, 0, maxHp); toast("體素針使用 // VITAL +25"); addFeed("你在街角使用體素針，傷口暫時閉合。", "warn"); } else if (id === "medbox" && state.inventory.medbox > 0) { state.inventory.medbox -= 1; state.hp = clamp(state.hp + 55, 0, maxHp); toast("醫療箱使用 // VITAL +55"); addFeed("你打開醫療箱，止血泡沫覆蓋了傷口。", "warn"); } else if (id === "ramCell" && state.inventory.ramCell > 0) { state.inventory.ramCell -= 1; state.ram = 100; toast("RAM 電池使用 // RAM FULL"); addFeed("RAM 電池接入，神經噪音恢復穩定。", "warn"); } else if (id === "loot") { openLootBox(); return; } else return; saveState(); render(); }
 function cycleEquipment(currentId) { const current = equipmentCatalog.find(item => item.id === currentId); const options = equipmentCatalog.filter(item => item.slot === current.slot); const next = options[(options.findIndex(item => item.id === currentId) + 1) % options.length]; state.equipment[current.slot] = next.id; addFeed(`${current.slot} 已切換為 ${next.title}。`); toast(`${next.title} // EQUIPPED`); saveState(); render(); }
 function toggleSkill(id) { const index = state.equippedSkills.indexOf(id); if (index >= 0) state.equippedSkills.splice(index, 1); else if (state.equippedSkills.length < 2) state.equippedSkills.push(id); else { state.equippedSkills[0] = id; } addFeed(index >= 0 ? `${id} 已卸下。` : `${id} 已裝入神經快捷欄。`); saveState(); render(); }
+const baseToggleSkillForSlots = toggleSkill;
+toggleSkill = function (id) { if (!state.equippedSkills.includes(id) && state.equippedSkills.length >= 2) return toast("NEURAL SLOTS 已滿 // 請先卸下一個技能"); baseToggleSkillForSlots(id); };
 function renderMarket() { const city = cities.find(item => item.id === state.city) || cities[0]; const cycle = Math.floor(Date.now() / 120000); const rotated = marketItems.map((item, index) => ({ ...item, price: item.price + ((cycle + index) % 3) * 20 + (city.id === "rust" ? 10 : city.id === "void" ? -5 : 0) })); const items = rotated.map(item => `<div class="market-item"><span class="item-icon">${item.icon}</span><span><b>${item.title}</b><small>${item.desc} // 持有 ${Math.max(0, Number(state.inventory[item.id]) || 0)}</small></span><button class="buy-btn" data-market="${item.id}" ${state.credits < item.price ? "disabled" : ""}>₡ ${item.price}</button></div>`).join(""); const combatActions = combatActionCatalog.filter(action => action.price && !state.combatActions.includes(action.id)).map(action => { const localized = localizedCombatAction(action); return `<div class="market-item skill-row combat-action-market"><span class="item-icon">${action.icon}</span><span><b>${localized.title}</b><small>${localized.desc} // COMBAT ACTION</small></span><button class="buy-btn" data-market="combat:${action.id}" ${state.credits < action.price ? "disabled" : ""}>₡ ${action.price}</button></div>`; }).join(""); const skills = skillCatalog.map(skill => { const learned = state.skills.includes(skill.id); return `<div class="market-item skill-row"><span class="item-icon">${skill.icon}</span><span><b>${skill.title}</b><small>${skill.desc} // ${learned ? "已學習" : "技能晶片"}</small></span><button class="buy-btn ${learned ? "sell-btn" : ""}" data-market="${learned ? `sellSkill:${skill.id}` : `skill:${skill.id}`}" ${!learned && state.credits < skill.price ? "disabled" : ""}>${learned ? "出售 +₡" + Math.floor(skill.price * .45) : "₡ " + skill.price}</button></div>`; }).join(""); $("marketList").innerHTML = `<div class="market-cycle">${city.market} // ROTATION ${String(cycle % 99).padStart(2, "0")} // 新貨每 02:00</div>${items}${combatActions}${skills}<div class="market-item sell-row"><span class="item-icon">◆</span><span><b>黑盒戰利品</b><small>未開 ${Math.max(0, Number(state.inventory.loot) || 0)} // 開啟可獲得物資或技能晶片</small></span><button class="buy-btn" data-market="openLoot" ${state.inventory.loot < 1 ? "disabled" : ""}>開啟</button><button class="buy-btn sell-btn" data-market="sellLoot" ${state.inventory.loot < 1 ? "disabled" : ""}>出售 ₡140</button></div>`; document.querySelectorAll("[data-market]").forEach(button => button.addEventListener("click", () => tradeMarket(button.dataset.market))); }
 function renderUpgrades() { const available = upgrades.filter(u => !state.upgrades.includes(u.id)); $("upgradeList").innerHTML = available.length ? available.map(u => `<div class="upgrade-item"><span class="item-icon">${u.icon}</span><span><b>${u.title}</b><small>${u.desc}</small></span><button class="buy-btn" data-upgrade="${u.id}" ${state.credits < u.cost ? "disabled" : ""}>₡ ${u.cost}</button></div>`).join("") : `<div class="empty-install">BLACK MARKET WAITING FOR NEW HARDWARE</div>`; document.querySelectorAll("[data-upgrade]").forEach(el => el.addEventListener("click", () => buyUpgrade(el.dataset.upgrade))); $("installLog").innerHTML = state.installLog.length ? state.installLog.slice().reverse().map(item => `<div class="install-record"><span>${item.icon}</span><b>${item.title}</b><small>INSTALLED // ${item.time}</small></div>`).join("") : `<div class="empty-install">NO INSTALLATION HISTORY</div>`; }
 function renderSkills() { $("skillLog").innerHTML = state.skills.length ? state.skills.map(id => { const skill = skillCatalog.find(item => item.id === id); const equipped = state.equippedSkills.includes(id); return `<button class="skill-chip ${equipped ? "active" : ""}" data-skill-toggle="${id}">${skill.icon} ${skill.title} <small>${equipped ? "EQP" : "READY"}</small></button>`; }).join("") : `<span class="empty-install">NO SKILLS DECRYPTED</span>`; $("skillLog").querySelectorAll("[data-skill-toggle]").forEach(button => button.addEventListener("click", () => toggleSkill(button.dataset.skillToggle))); }
@@ -285,6 +287,26 @@ playTone = function (frequency, duration = .12, type = "sine", volume = .12, des
 renderEquippedSkills = function () { $("skillSlotCount").textContent = `${state.equippedSkills.length} / 2`; $("equippedSkills").innerHTML = [0, 1].map(index => { const skill = skillCatalog.find(item => item.id === state.equippedSkills[index]); return skill ? `<button class="equipped-skill" data-skill-toggle="${skill.id}"><span>${skill.icon}</span><b>${skill.title}</b><small>${skill.desc}</small><em>×</em></button>` : `<span class="skill-slot-empty">SLOT ${index + 1} // EMPTY</span>`; }).join(""); $("equippedSkills").querySelectorAll("[data-skill-toggle]").forEach(button => button.addEventListener("click", () => toggleSkill(button.dataset.skillToggle))); };
 renderSkills = function () { const available = state.skills.map(id => ({ id, skill: skillCatalog.find(item => item.id === id) })).filter(entry => entry.skill); $("skillLog").innerHTML = available.length ? available.map(({ id, skill }) => { const equipped = state.equippedSkills.includes(id); return `<button class="skill-chip ${equipped ? "active" : ""}" data-skill-toggle="${id}">${skill.icon} ${skill.title} <small>${equipped ? "EQP" : "READY"}</small></button>`; }).join("") : `<span class="empty-install">NO SKILLS DECRYPTED</span>`; $("skillLog").querySelectorAll("[data-skill-toggle]").forEach(button => button.addEventListener("click", () => toggleSkill(button.dataset.skillToggle))); };
 renderCombatSkills = function () { const panel = $("combatPanel"); if (!panel) return; let bar = $("skillActions"); if (!bar) { bar = document.createElement("div"); bar.id = "skillActions"; bar.className = "skill-actions"; panel.querySelector(".combat-actions")?.parentElement.appendChild(bar); } let heading = $("combatSkillHeading"); if (!heading) { heading = document.createElement("div"); heading.id = "combatSkillHeading"; heading.className = "combat-skill-heading"; bar.parentElement.insertBefore(heading, bar); } let picker = $("combatSkillPicker"); if (!picker) { picker = document.createElement("div"); picker.id = "combatSkillPicker"; picker.className = "combat-skill-picker"; picker.hidden = true; bar.parentElement.insertBefore(picker, bar); } const skills = state.equippedSkills.map(id => skillCatalog.find(skill => skill.id === id)).filter(Boolean); const actionMap = { phase: "guard", parasite: "hack", echo: "strike", decoy: "guard" }; heading.innerHTML = `<span>NEURAL ACTIVE SKILLS // ${skills.length}/2</span><button type="button" id="swapCombatSkills">更換技能</button>`; bar.innerHTML = skills.map(skill => { const action = actionMap[skill.id]; return `<button class="skill-action-btn" data-skill-action="${skill.id}" ${action ? "" : "disabled"}><b>${skill.icon} ${skill.title}</b><small>${action ? `ACTIVE // USES ${action.toUpperCase()}` : "PASSIVE // ALWAYS ON"}</small></button>`; }).join(""); picker.innerHTML = state.skills.map(id => { const skill = skillCatalog.find(item => item.id === id); if (!skill) return ""; const equipped = state.equippedSkills.includes(id); return `<button type="button" data-combat-pick="${id}">${skill.icon} ${skill.title}${equipped ? " // EQP" : ""}</button>`; }).join(""); $("swapCombatSkills").onclick = () => { picker.hidden = !picker.hidden; }; picker.querySelectorAll("[data-combat-pick]").forEach(button => button.onclick = () => { if (state.combat?.busy) return toast("敵方回合中，暫時無法更換"); const id = button.dataset.combatPick; const slot = state.equippedSkills.indexOf(id); if (slot >= 0) state.equippedSkills.splice(slot, 1); else if (state.equippedSkills.length < 2) state.equippedSkills.push(id); else state.equippedSkills[0] = id; picker.hidden = true; saveState(); render(); }); bar.querySelectorAll("[data-skill-action]").forEach(button => button.onclick = () => { const action = actionMap[button.dataset.skillAction]; if (action) combatAction(action); }); };
+const baseRenderSkillsForRolePanel = renderSkills;
+renderSkills = function () {
+	const legacyNode = $("skillLog");
+	const legacyHeading = [...document.querySelectorAll(".upgrade .panel-heading")].find(node => node.textContent.includes("DECRYPTED SKILLS"));
+	legacyHeading?.remove();
+	legacyNode?.remove();
+	const loadout = document.querySelector(".skill-loadout");
+	const equipped = $("equippedSkills");
+	if (!loadout || !equipped) return;
+	let node = $("decryptedSkills");
+	if (!node) {
+		node = document.createElement("div");
+		node.id = "decryptedSkills";
+		node.className = "decrypted-skills";
+		equipped.after(node);
+	}
+	const available = state.skills.map(id => ({ id, skill: skillCatalog.find(item => item.id === id) })).filter(entry => entry.skill);
+	node.innerHTML = `<div class="decrypted-skills-heading"><b>已解密技能</b><small>在這裡裝備到 NEURAL SLOTS</small></div>${available.length ? available.map(({ id, skill }) => { const active = state.equippedSkills.includes(id); return `<div class="decrypted-skill-row ${active ? "active" : ""}"><span class="decrypted-skill-icon">${skill.icon}</span><span class="decrypted-skill-copy"><b>${skill.title}</b><small>${skill.desc}</small></span><button type="button" class="decrypted-skill-toggle" data-skill-toggle="${id}">${active ? "已裝備" : "裝備"}</button></div>`; }).join("") : `<span class="empty-install">尚未解密技能</span>`}`;
+	node.querySelectorAll("[data-skill-toggle]").forEach(button => button.addEventListener("click", () => toggleSkill(button.dataset.skillToggle)));
+};
 const baseRenderCombatSkillsWithDescriptions = renderCombatSkills;
 renderCombatSkills = function () { baseRenderCombatSkillsWithDescriptions(); const actionMap = { phase: "guard", parasite: "hack", echo: "strike", decoy: "guard" }; document.querySelectorAll("#skillActions .skill-action-btn").forEach(button => { const skill = skillCatalog.find(item => item.id === button.dataset.skillAction); const hint = button.querySelector("small"); if (!skill || !hint) return; const action = actionMap[skill.id]; hint.textContent = `${skill.desc} // ${action ? `ACTIVE // USES ${action.toUpperCase()}` : "PASSIVE // ALWAYS ON"}`; }); };
 const combatConsumableDefinitions = { medkit: { cost: 1, amount: 25, type: "heal" }, medbox: { cost: 2, amount: 55, type: "heal" }, energyDrink: { cost: 0, amount: 20, type: "ram" }, coolant: { cost: 0, amount: 6, type: "coolant" }, vitalGel: { cost: 1, amount: 18, type: "heal" }, patchKit: { cost: 1, amount: 35, type: "heal" }, blackCoffee: { cost: 0, amount: 1, type: "energy" }, ghostAmpoule: { cost: 2, amount: 70, type: "heal" } };
@@ -419,7 +441,7 @@ renderCityNetworkMap = function () {
 const baseChangeCityNetwork = changeCity;
 changeCity = function (id) { baseChangeCityNetwork(id); state.visitedCities = [...new Set([...(state.visitedCities || []), id])]; saveState(); };
 const baseRenderDistrictPurpose = renderDistrict;
-renderDistrict = function () { baseRenderDistrictPurpose(); const panel = document.querySelector(".district"); if (!panel) return; const city = cities.find(item => item.id === state.city) || cities[0]; let purpose = $("districtPurpose"); if (!purpose) { purpose = document.createElement("div"); purpose.id = "districtPurpose"; purpose.className = "district-purpose"; panel.appendChild(purpose); } const run = state.exploreRun; const threat = state.heat >= 65 ? "高" : state.heat >= 35 ? "中" : "低"; purpose.innerHTML = `<div class="district-purpose-head"><b>CITY NETWORK // NAVIGATION</b><small>下城區是探索導航，不是第二個任務列表</small></div><p><strong>目前城市：</strong>${city.name}。在這裡查看你的位置、威脅方向與探索收益。</p><div class="district-purpose-grid"><span><b>下一步</b><small>${run?.node?.location || "等待探索節點"}</small></span><span><b>威脅</b><small>${threat} // HEAT ${state.heat}%</small></span><span><b>收益</b><small>線索 ${run?.clues || 0}/3 // REP +${state.rep}</small></span></div>`; const launcher = document.querySelector(".district-launcher"); if (launcher) launcher.innerHTML = `<span aria-hidden="true">⌖</span><span>CITY NETWORK</span>`; const heading = panel.querySelector(".panel-heading h3"); if (heading) heading.textContent = "城市網路導航"; };
+renderDistrict = function () { baseRenderDistrictPurpose(); const panel = document.querySelector(".district"); if (!panel) return; const city = cities.find(item => item.id === state.city) || cities[0]; let purpose = $("districtPurpose"); if (!purpose) { purpose = document.createElement("div"); purpose.id = "districtPurpose"; purpose.className = "district-purpose"; panel.appendChild(purpose); } const run = state.exploreRun; const threat = state.heat >= 65 ? "高" : state.heat >= 35 ? "中" : "低"; purpose.innerHTML = `<div class="district-purpose-head"><b>CITY NETWORK // NAVIGATION</b><small>下城區是探索導航，不是第二個任務列表</small></div><p><strong>目前城市：</strong>${city.name}。在這裡查看你的位置、威脅方向與探索收益。</p><div class="district-purpose-grid"><span><b>下一步</b><small>${run?.node?.location || "等待探索節點"}</small></span><span><b>威脅</b><small>${threat} // HEAT ${state.heat}%</small></span><span><b>收益</b><small>線索 ${run?.clues || 0}/3 // REP +${state.rep}</small></span></div>`; const launcher = document.querySelector(".district-launcher"); if (launcher) launcher.innerHTML = `<span aria-hidden="true">${workspaceIcon("city")}</span><span>CITY NETWORK</span>`; const heading = panel.querySelector(".panel-heading h3"); if (heading) heading.textContent = "城市網路導航"; };
 const defaultRunnerNote = "「別相信會發光的東西。除了我的刀。」";
 function renderRunnerNote() { const note = $("runnerNoteText"); const author = $("runnerNoteAuthor"); if (!note || !author) return; note.textContent = state.runnerNote || defaultRunnerNote; author.textContent = `— ${state.name} // ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`; }
 function expireRunStreak(now = Date.now()) { if (state.runStreak > 0 && state.lastRunAt && now - state.lastRunAt >= streakWindowMs) { state.runStreak = 0; state.lastRunAt = 0; saveState(); addFeed("連勝窗口已關閉，獎勵倍率恢復正常。", "warn"); return true; } return false; }
@@ -465,10 +487,106 @@ const baseTradeMarketWithEquipment = tradeMarket;
 tradeMarket = id => id.startsWith("equipment:") ? gatePurchase(() => tradeEquipment(id)) : baseTradeMarketWithEquipment(id);
 function enhanceCollapsiblePanels() { const makeToggle = (container, heading, collapsed, type = "panel") => { if (!container || container.querySelector(`.${type}-toggle`)) return; const button = document.createElement("button"); button.type = "button"; button.className = `${type}-toggle`; button.setAttribute("aria-expanded", String(!collapsed)); button.textContent = collapsed ? "+" : "−"; button.title = state.language === "en" ? (collapsed ? "Expand section" : "Collapse section") : (collapsed ? "展開區塊" : "收合區塊"); heading.appendChild(button); if (collapsed) container.classList.add("is-collapsed"); button.addEventListener("click", event => { event.preventDefault(); const nextCollapsed = !container.classList.contains("is-collapsed"); container.classList.toggle("is-collapsed", nextCollapsed); button.setAttribute("aria-expanded", String(!nextCollapsed)); button.textContent = nextCollapsed ? "+" : "−"; }); }; const inventory = $("inventoryActions"); const inventoryHeading = document.querySelector(".inventory-strip"); if (inventory && inventoryHeading && !inventoryHeading.querySelector(".section-toggle")) { const button = document.createElement("button"); button.type = "button"; button.className = "section-toggle"; button.textContent = "−"; button.setAttribute("aria-expanded", "true"); button.title = state.language === "en" ? "Collapse inventory" : "收合物品欄"; inventoryHeading.appendChild(button); button.addEventListener("click", () => { const hidden = !inventory.classList.contains("is-hidden"); inventory.classList.toggle("is-hidden", hidden); button.textContent = hidden ? "+" : "−"; button.setAttribute("aria-expanded", String(!hidden)); }); } [[".skill-loadout", true], [".combat-loadout", true]].forEach(([selector, collapsed]) => { const container = document.querySelector(selector); makeToggle(container, container?.querySelector(".section-label"), collapsed, "section"); }); [[".district", false], [".upgrade", true], [".tips", true]].forEach(([selector, collapsed]) => { const container = document.querySelector(selector); makeToggle(container, container?.querySelector(".panel-heading"), collapsed, "panel"); }); }
 enhanceCollapsiblePanels();
-function enhanceDistrictDrawer() { const district = document.querySelector(".district"); const topActions = document.querySelector(".top-actions"); if (!district || !topActions || district.dataset.drawerReady) return; district.dataset.drawerReady = "true"; district.classList.add("district-drawer"); const backdrop = document.createElement("div"); backdrop.className = "district-backdrop"; backdrop.id = "districtBackdrop"; document.body.appendChild(backdrop); const close = document.createElement("button"); close.type = "button"; close.className = "district-close"; close.textContent = "×"; close.setAttribute("aria-label", state.language === "en" ? "Close district map" : "關閉下城區地圖"); district.querySelector(".panel-heading")?.appendChild(close); const launcher = document.createElement("button"); launcher.type = "button"; launcher.className = "district-launcher"; launcher.innerHTML = `<span aria-hidden="true">⌖</span><span>${state.language === "en" ? "DISTRICT" : "下城區"}</span>`; launcher.setAttribute("aria-expanded", "false"); launcher.setAttribute("aria-controls", "districtDrawer"); launcher.title = state.language === "en" ? "Open district map" : "開啟下城區地圖"; district.id = "districtDrawer"; document.body.appendChild(district); topActions.insertBefore(launcher, topActions.firstChild); const setOpen = open => { district.classList.toggle("is-open", open); backdrop.classList.toggle("is-visible", open); launcher.setAttribute("aria-expanded", String(open)); document.body.classList.toggle("district-open", open); if (open) close.focus(); else launcher.focus(); }; launcher.addEventListener("click", () => setOpen(true)); close.addEventListener("click", () => setOpen(false)); backdrop.addEventListener("click", () => setOpen(false)); document.addEventListener("keydown", event => { if (event.key === "Escape" && district.classList.contains("is-open")) setOpen(false); }); }
+function enhanceDistrictDrawer() { const district = document.querySelector(".district"); const topActions = document.querySelector(".top-actions"); if (!district || !topActions || district.dataset.drawerReady) return; district.dataset.drawerReady = "true"; district.classList.add("district-drawer"); const backdrop = document.createElement("div"); backdrop.className = "district-backdrop"; backdrop.id = "districtBackdrop"; document.body.appendChild(backdrop); const close = document.createElement("button"); close.type = "button"; close.className = "district-close"; close.textContent = "×"; close.setAttribute("aria-label", state.language === "en" ? "Close district map" : "關閉下城區地圖"); district.querySelector(".panel-heading")?.appendChild(close); const launcher = document.createElement("button"); launcher.type = "button"; launcher.className = "district-launcher"; launcher.dataset.workspace = "city"; launcher.innerHTML = `<span aria-hidden="true">${workspaceIcon("city")}</span><span>${state.language === "en" ? "DISTRICT" : "下城區"}</span>`; launcher.setAttribute("aria-expanded", "false"); launcher.setAttribute("aria-controls", "districtDrawer"); launcher.title = state.language === "en" ? "Open district map" : "開啟下城區地圖"; district.id = "districtDrawer"; document.body.appendChild(district); topActions.insertBefore(launcher, topActions.firstChild); const setOpen = open => { district.classList.toggle("is-open", open); backdrop.classList.toggle("is-visible", open); launcher.setAttribute("aria-expanded", String(open)); document.body.classList.toggle("district-open", open); if (open) close.focus(); else launcher.focus(); }; launcher.addEventListener("click", () => setOpen(true)); close.addEventListener("click", () => setOpen(false)); backdrop.addEventListener("click", () => setOpen(false)); document.addEventListener("keydown", event => { if (event.key === "Escape" && district.classList.contains("is-open")) setOpen(false); }); }
+function workspaceIcon(kind) {
+	const paths = {
+		runner: '<circle cx="12" cy="7.5" r="3.2"/><path d="M5.5 20c.7-3.7 2.9-5.7 6.5-5.7s5.8 2 6.5 5.7"/><path d="M3 4h3M18 4h3"/>',
+		ops: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/>',
+		city: '<circle cx="6" cy="7" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="15" cy="18" r="2"/><path d="m7.8 7.7 8.4-1.4M16.9 6.7l-2.8 9.4M13.2 17.5 7 8.8"/>'
+	};
+	return `<svg class="workspace-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${paths[kind]}</svg>`;
+}
 enhanceDistrictDrawer();
 function enhanceWorkspaceDrawers() { const sidebar = document.querySelector(".sidebar"); const rightbar = document.querySelector(".rightbar"); const topActions = document.querySelector(".top-actions"); if (!sidebar || !rightbar || !topActions || sidebar.dataset.workspaceReady) return; sidebar.dataset.workspaceReady = "true"; rightbar.dataset.workspaceReady = "true"; sidebar.classList.add("workspace-drawer"); rightbar.classList.add("workspace-drawer"); const backdrop = document.createElement("div"); backdrop.className = "workspace-backdrop"; document.body.appendChild(backdrop); const makeLauncher = (label, icon, target) => { const button = document.createElement("button"); button.type = "button"; button.className = "workspace-launcher"; button.innerHTML = `<span aria-hidden="true">${icon}</span><span>${label}</span>`; button.setAttribute("aria-expanded", "false"); button.title = state.language === "en" ? `Open ${label}` : `開啟${label}`; topActions.insertBefore(button, topActions.firstChild); const setOpen = open => { if (open) [sidebar, rightbar].filter(drawer => drawer !== target).forEach(drawer => drawer.classList.remove("is-open")); target.classList.toggle("is-open", open); backdrop.classList.toggle("is-visible", open); [sidebar, rightbar].forEach(drawer => { const launcher = drawer === sidebar ? runner?.button : ops?.button; if (launcher) launcher.setAttribute("aria-expanded", String(drawer === target && open)); }); document.body.classList.toggle("workspace-open", open); if (open) target.querySelector("button,input,select")?.focus(); else button.focus(); }; button.addEventListener("click", () => setOpen(!target.classList.contains("is-open"))); return { button, setOpen }; }; let runner; let ops; runner = makeLauncher("RUNNER", "◒", sidebar); ops = makeLauncher(state.language === "en" ? "OPS" : "行動", "⌁", rightbar); backdrop.addEventListener("click", () => { sidebar.classList.remove("is-open"); rightbar.classList.remove("is-open"); backdrop.classList.remove("is-visible"); document.body.classList.remove("workspace-open"); runner.button.focus(); }); document.addEventListener("keydown", event => { if (event.key !== "Escape") return; const open = sidebar.classList.contains("is-open") ? runner : rightbar.classList.contains("is-open") ? ops : null; if (open) { sidebar.classList.remove("is-open"); rightbar.classList.remove("is-open"); backdrop.classList.remove("is-visible"); document.body.classList.remove("workspace-open"); open.button.focus(); } }); }
 enhanceWorkspaceDrawers();
+function decorateWorkspaceLaunchers() {
+	const launchers = [...document.querySelectorAll(".workspace-launcher")];
+	["ops", "runner"].forEach((kind, index) => {
+		const button = launchers[index];
+		if (!button) return;
+		button.dataset.workspace = kind;
+		button.innerHTML = `<span aria-hidden="true">${workspaceIcon(kind)}</span><span>${kind === "runner" ? (state.language === "en" ? "RUNNER" : "角色") : (state.language === "en" ? "OPS" : "行動")}</span>`;
+	});
+	const city = document.querySelector(".district-launcher");
+	if (city) {
+		city.dataset.workspace = "city";
+		city.innerHTML = `<span aria-hidden="true">${workspaceIcon("city")}</span><span>${state.language === "en" ? "CITY" : "城市網路"}</span>`;
+	}
+}
+decorateWorkspaceLaunchers();
+document.addEventListener("click", event => {
+	const launcher = event.target.closest(".workspace-launcher,.district-launcher");
+	if (!launcher) return;
+	setTimeout(() => {
+		const district = document.querySelector(".district.district-drawer");
+		const districtBackdrop = document.querySelector(".district-backdrop");
+		if (launcher.dataset.workspace === "city") {
+			document.querySelector(".sidebar.workspace-drawer")?.classList.remove("is-open");
+			document.querySelector(".rightbar.workspace-drawer")?.classList.remove("is-open");
+			document.querySelector(".workspace-backdrop")?.classList.remove("is-visible");
+			document.body.classList.remove("workspace-open");
+		} else if (district?.classList.contains("is-open")) {
+			district.classList.remove("is-open");
+			districtBackdrop?.classList.remove("is-visible");
+			document.body.classList.remove("district-open");
+		}
+		if (launcher.dataset.workspace !== "city") document.querySelector(".district-launcher")?.setAttribute("aria-expanded", "false");
+		syncWorkspaceLauncherState();
+		if (district) launcher.dataset.workspace === "city" && launcher.setAttribute("aria-expanded", String(district.classList.contains("is-open")));
+	}, 60);
+});
+function addWorkspaceDrawerCloseButtons() {
+	const backdrop = document.querySelector(".workspace-backdrop");
+	document.querySelectorAll(".workspace-drawer").forEach(drawer => {
+		if (drawer.querySelector(".workspace-drawer-close")) return;
+		const close = document.createElement("button");
+		close.type = "button";
+		close.className = "workspace-drawer-close";
+		close.innerHTML = "<span aria-hidden=\"true\">×</span><span>關閉面板</span>";
+		close.setAttribute("aria-label", "關閉面板");
+		drawer.prepend(close);
+		close.addEventListener("click", event => {
+			event.stopPropagation();
+			drawer.classList.remove("is-open");
+			backdrop?.classList.remove("is-visible");
+			document.body.classList.remove("workspace-open");
+			syncWorkspaceLauncherState();
+		});
+	});
+}
+addWorkspaceDrawerCloseButtons();
+function expandWorkspaceOperations() {
+	const rightbar = document.querySelector(".rightbar.workspace-drawer");
+	if (!rightbar) return;
+	rightbar.querySelectorAll(".is-collapsed").forEach(panel => {
+		panel.classList.remove("is-collapsed");
+		const toggle = panel.querySelector(".panel-toggle");
+		if (toggle) {
+			toggle.textContent = "−";
+			toggle.setAttribute("aria-expanded", "true");
+		}
+	});
+}
+function expandRunnerNeuralSlots() {
+	const panel = document.querySelector(".skill-loadout");
+	if (!panel) return;
+	panel.classList.remove("is-collapsed");
+	const toggle = panel.querySelector(".section-toggle");
+	if (toggle) {
+		toggle.textContent = "−";
+		toggle.setAttribute("aria-expanded", "true");
+	}
+}
+document.addEventListener("click", event => {
+	const launcher = event.target.closest(".workspace-launcher");
+	if (launcher?.dataset.workspace === "ops") {
+		setTimeout(() => {
+			expandWorkspaceOperations();
+			document.querySelector(".rightbar.workspace-drawer")?.scrollTo({ top: 0 });
+		}, 0);
+	}
+	if (launcher?.dataset.workspace === "runner") setTimeout(expandRunnerNeuralSlots, 0);
+});
 function refreshWorkspaceLabels() { const english = state.language === "en"; document.querySelectorAll(".workspace-launcher").forEach(button => { const isRunner = button.querySelector("span:first-child")?.textContent.trim() === "◒" || button.querySelector("span:last-child")?.textContent.includes("RUNNER") || button.title.includes("RUNNER"); if (isRunner) { const label = button.querySelector("span:last-child"); if (label) label.textContent = english ? "RUNNER" : "角色"; button.title = english ? "Open RUNNER" : "開啟角色面板"; } }); }
 refreshWorkspaceLabels();
 function openOpsDrawer() { const launcher = [...document.querySelectorAll(".workspace-launcher")].find(button => button.textContent.includes("OPS") || button.textContent.includes("行動")); if (launcher && !document.querySelector(".rightbar")?.classList.contains("is-open")) launcher.click(); const market = document.querySelector(".upgrade"); if (market?.classList.contains("is-collapsed")) market.querySelector(".panel-toggle")?.click(); market?.scrollIntoView({ block: "start" }); }
@@ -486,6 +604,29 @@ document.addEventListener("click", event => { const button = event.target.closes
 document.addEventListener("click", event => { if (!event.target.closest(".workspace-launcher,.workspace-backdrop")) return; setTimeout(() => document.querySelectorAll(".workspace-launcher").forEach(button => { const drawer = button.textContent.includes("RUNNER") ? document.querySelector(".sidebar") : document.querySelector(".rightbar"); button.setAttribute("aria-expanded", String(drawer?.classList.contains("is-open"))); }), 0); });
 document.addEventListener("keydown", event => { if (event.key !== "Escape") return; setTimeout(() => document.querySelectorAll(".workspace-launcher").forEach(button => { const drawer = button.textContent.includes("RUNNER") ? document.querySelector(".sidebar") : document.querySelector(".rightbar"); button.setAttribute("aria-expanded", String(drawer?.classList.contains("is-open"))); }), 0); });
 updateAudioButton();
+function syncWorkspaceLauncherState() {
+	const sidebar = document.querySelector(".sidebar.workspace-drawer");
+	const rightbar = document.querySelector(".rightbar.workspace-drawer");
+	document.querySelectorAll(".workspace-launcher").forEach(button => {
+		const drawer = button.dataset.workspace === "runner" ? sidebar : rightbar;
+		if (!drawer) return;
+		const open = drawer.classList.contains("is-open");
+		button.setAttribute("aria-expanded", String(open));
+		button.classList.toggle("is-active", open);
+	});
+}
+document.addEventListener("click", event => {
+	if (!event.target.closest(".workspace-launcher,.workspace-backdrop")) return;
+	requestAnimationFrame(syncWorkspaceLauncherState);
+	setTimeout(syncWorkspaceLauncherState, 50);
+});
+document.addEventListener("keydown", event => {
+	if (event.key === "Escape") {
+		requestAnimationFrame(syncWorkspaceLauncherState);
+		setTimeout(syncWorkspaceLauncherState, 50);
+	}
+});
+syncWorkspaceLauncherState();
 function updateNoteCounter() { const input = $("noteInput"); const counter = $("noteCounter"); if (input && counter) counter.textContent = `${input.value.length} / 180`; }
 $("editRunnerNote").addEventListener("click", () => { $("noteInput").value = state.runnerNote || defaultRunnerNote; $("noteModal").hidden = false; updateNoteCounter(); $("noteInput").focus(); }); $("closeNote").addEventListener("click", () => $("noteModal").hidden = true); $("noteInput").addEventListener("input", updateNoteCounter); $("noteForm").addEventListener("submit", event => { event.preventDefault(); const note = $("noteInput").value.trim(); if (!note) return; state.runnerNote = note.slice(0, 180); $("noteModal").hidden = true; saveState(); renderRunnerNote(); });
 $("titleBtn").addEventListener("click", () => { syncTitles(); renderTitlePanel(); $("titleModal").hidden = false; }); $("closeTitle").addEventListener("click", () => $("titleModal").hidden = true);
