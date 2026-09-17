@@ -177,8 +177,7 @@
 		.system-note{margin:0 0 8px;color:#9aabb2;font-size:10px;line-height:1.5}.action-icon,.neural-icon{width:17px;height:17px;display:inline-block;vertical-align:-4px;margin-right:5px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.neural-icon{color:var(--cyan);width:15px;height:15px}.action-btn b{display:flex;align-items:center}.skill-action-btn b{display:flex;align-items:center}.combat-action-market .item-icon{display:grid;place-items:center}.combat-action-market .action-icon{width:22px;height:22px;margin:0}.inventory-btn:first-child{color:var(--pink)}.inventory-btn:nth-child(2){color:var(--lime)}
 		.combat.active .combat-arena{display:flex;align-items:center;gap:25px;margin:18px 0;padding:17px;background:#0b121b;border:1px solid #3a2739}.combat.active .enemy-art{flex:0 0 74px;width:74px;height:74px;display:grid;place-items:center;color:#ff4f96;font-size:42px;border:1px solid #ff4f96;box-shadow:0 0 25px #ff4f9638}.combat.active .enemy-info{flex:1;min-width:0}.combat.active .enemy-info .bar-label,.combat.active .enemy-info .energy-label{display:flex;justify-content:space-between}.combat.active .enemy-bar{height:8px;background:#35202e;margin:8px 0 12px}.combat.active .enemy-bar i{display:block;height:100%;background:#ff4f96;transition:width .35s}.combat.active .enemy-info p{color:#af9ba5;font-size:13px;margin:0;min-height:15px}.combat.active .combat-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.combat.active .action-btn{display:block;width:100%;min-width:0;background:#111b27;border:1px solid #263746;color:#dce8e7;padding:12px 10px;text-align:left}.combat.active .action-btn:hover:not(:disabled){border-color:#3de5d0;transform:translateY(-2px)}.combat.active .action-btn:disabled{opacity:.38;cursor:not-allowed}.combat.active .action-btn b,.combat.active .action-btn small{display:block}.combat.active .action-btn b{font-size:13px}.combat.active .action-btn small{font-size:10px;color:#738391;margin-top:5px}.combat.active .action-btn.attack b{color:#ff4f96}.combat.active .action-btn.hack b{color:#3de5d0}.combat.active .action-btn.heal b{color:#b7ec63}.combat.active .action-btn.overdrive b{color:#ffba5c}.combat.active .action-btn.guard b{color:#b7ec63}.combat.active .action-btn.escape b{color:#ffba5c}
 		.combat-player-hud .combat-vital em,
-		.combat-player-hud .combat-stat em { width: var(--target-width); animation: combatHudBarFill .5s cubic-bezier(.2,.8,.2,1) both; transform-origin: left center; }
-		@keyframes combatHudBarFill { from { width: 0; } to { width: var(--target-width); } }
+		.combat-player-hud .combat-stat em { width: 0; transition: width .35s cubic-bezier(.2,.8,.2,1); transform-origin: left center; }
 		.combat-skill-picker[hidden]{display:none!important}
 	.energy-label{display:flex;justify-content:space-between;color:#738391;font-size:9px;margin-top:10px}.energy-label b{color:#3de5d0}.energy-bar{height:4px;background:#20353a;margin:5px 0 10px}.energy-bar i{display:block;height:100%;width:100%;background:#3de5d0;transition:width .3s}.action-btn.overdrive b{color:#ffba5c}.action-btn.guard b{color:#b7ec63}.combat-actions{grid-template-columns:repeat(3,1fr)}
 		.combat-action-slot{padding:9px 0}.combat-action-slot .loadout-slot-head{margin-bottom:5px}.combat-action-slot .loadout-select{font-size:10px}.combat-action-slot small{font-size:9px}
@@ -283,6 +282,23 @@
 		@media(max-width:760px) { #loginModal.login-modal { padding: 14px !important; } #loginModal .login-box { padding: 26px 20px 22px; } #loginModal .login-box h2 { font-size: 26px; } }
 		#valuesModal .values-box > .close-btn { position: absolute; top: 10px; right: 10px; z-index: 120; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid rgba(61, 229, 208, .45); background: rgba(13, 20, 30, .9); color: var(--cyan); font: 20px/1 var(--mono); cursor: pointer; }
 		#valuesModal .values-box > .close-btn:hover, #valuesModal .values-box > .close-btn:focus-visible { border-color: var(--cyan); color: var(--text); background: rgba(61, 229, 208, .12); outline: none; box-shadow: 0 0 14px rgba(61, 229, 208, .2); }
+		#helpModal.help-modal { z-index: 140; padding: clamp(12px, 4vw, 28px); overflow-y: auto; }
+		#helpModal .help-box { position: relative; width: min(760px, 100%); max-height: min(760px, calc(100vh - 24px)); overflow-y: auto; padding: clamp(22px, 4vw, 30px); }
+		#helpModal .help-box > .close-btn { position: absolute; top: 10px; right: 10px; z-index: 2; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid rgba(61, 229, 208, .45); background: rgba(13, 20, 30, .9); color: var(--cyan); font: 20px/1 var(--mono); cursor: pointer; }
+		#helpModal .help-box > .close-btn:hover, #helpModal .help-box > .close-btn:focus-visible { border-color: var(--cyan); color: var(--text); background: rgba(61, 229, 208, .12); outline: none; box-shadow: 0 0 14px rgba(61, 229, 208, .2); }
+		#helpModal .help-box h2 { padding-right: 42px; }
+		#helpModal .help-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+		#helpModal .help-grid section { min-width: 0; }
+		#helpModal .help-grid p { overflow-wrap: anywhere; }
+		@media (max-width: 680px) {
+			#helpModal.help-modal { align-items: start; padding: 12px; }
+			#helpModal .help-box { max-height: calc(100vh - 24px); padding: 20px 16px 18px; }
+			#helpModal .help-box h2 { margin-top: 8px; font-size: 30px; }
+			#helpModal .help-grid { grid-template-columns: 1fr; gap: 9px; }
+			#helpModal .help-grid section { padding: 12px; }
+			#helpModal .help-grid h3 { margin-bottom: 7px; }
+			#helpModal .help-grid p { margin: 6px 0; line-height: 1.7; }
+		}
 	</style>
 	</head>
 <body>
